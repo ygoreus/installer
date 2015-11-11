@@ -56,7 +56,7 @@ rankmirrors -n 8 mirrorlist.US > mirrorlist
 pacman -Syy
 
 echo -e " >>> Install the base system and development tools...\n"
-pacstrap -i /mnt base base-devel bash-completions
+pacstrap -i /mnt base base-devel bash-completions linux-lts
 
 echo -e " >>> Generating the file system table (fstab)..."
 genfstab -U -p /mnt >> /mnt/etc/fstab
