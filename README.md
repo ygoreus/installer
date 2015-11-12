@@ -2,8 +2,8 @@
 
 ##### Scripts for installing Arch linux with certain features:
 
-* full\* disk encryption
-* lvm
+* full\* disk encryption (using cryptsetup, for 1 partition)
+* lvm (split up encrypted partition)
 * etc
 
 
