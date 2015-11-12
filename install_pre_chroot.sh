@@ -36,16 +36,16 @@ vgchange -ay
 
 echo -e "\n >>> Formatting the file systems..."
 mkfs.ext4 -L BOOTFS /dev/sda1
-mkfs.ext4 -L ROOTFS /dev/mapper/lvm/${host}-rootvol
-mkfs.ext4 -L HOMEFS /dev/mapper/lvm/${host}-homevol
-mkswap /dev/mapper/lvm/${host}-swapvol
+mkfs.ext4 -L ROOTFS /dev/mapper/${host}-rootvol
+mkfs.ext4 -L HOMEFS /dev/mapper/${host}-homevol
+mkswap /dev/mapper/${host}-swapvol
 
 echo -e "\n >>> mount file systems to mount points..."
-mount /dev/mapper/lvm/${host}-rootvol /mnt
+mount /dev/mapper/${host}-rootvol /mnt
 mkdir -p /mnt/home /mnt/boot
 mount /dev/sda1 /mnt/boot
-mount /dev/mapper/lvm/${host}-homevol /mnt/home
-swapon /dev/mapper/lvm/${host}-swapvol
+mount /dev/mapper/${host}-homevol /mnt/home
+swapon /dev/mapper/${host}-swapvol
 echo -e "\n >>> Done preparing\!"
 
 ##-- Install base system
@@ -56,7 +56,7 @@ rankmirrors -n 8 mirrorlist.US > mirrorlist
 pacman -Syy
 
 echo -e " >>> Install the base system and development tools...\n"
-pacstrap -i /mnt base base-devel bash-completions linux-lts
+pacstrap -i /mnt base base-devel bash-completion linux-lts
 
 echo -e " >>> Generating the file system table (fstab)..."
 genfstab -U -p /mnt >> /mnt/etc/fstab
@@ -64,4 +64,4 @@ echo -e "\n >>> Setting locale for new system...\n"
 locale | head -n -1 > /mnt/etc/locale.conf
 echo -e "\n >>> Ready for chroot.\n"
 
-return 0
+
