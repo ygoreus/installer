@@ -36,7 +36,7 @@ echo -e "\n >>> Installing and configuring the bootloader..."
 pacman -S --asexplicit syslinux gptfdisk
 syslinux-install_update -iam
 cp /boot/syslinux/syslinux.cfg /boot/syslinux/syslinux.cfg.default
-disk=$(lsblk -f | grep 'sda2' | awk '{print $3}')
+#disk=$(lsblk -f | grep 'sda2' | awk '{print $3}')
 sed -i "s|APPEND.*$|APPEND cryptdevice=/dev/disk/by-uuid/${disk}\:lvm root=/dev/mapper/Charon-rootvol rw elevator=noop|" /boot/syslinux/syslinux.cfg
 sed -i "s|INITRD.*$|INITRD ../intel-ucode.img,../initramfs-linux.img|g" /boot/syslinux/syslinux.cfg
 sed -i 's|block filesystems|block encrypt lvm2 resume filesystems|' /etc/mkinitcpio.conf
@@ -192,18 +192,14 @@ pacman -S --asexplicit --noconfirm lib32-lcms lib32-lcms2 lib32-libaio lib32-lib
                                    lib32-libxdmcp lib32-libxext lib32-libxfixes lib32-libxft \
                                    lib32-libxi lib32-libxinerama lib32-libxml2 lib32-libxmu \
                                    lib32-libxrandr lib32-libxrender lib32-libxshmfence \
-                                   lib32-libxslt lib32-libxss lib32-libxt lib32-libxtst \ 
+                                   lib32-libxslt lib32-libxss lib32-libxt lib32-libxtst \
                                    lib32-libxv lib32-libxvmc lib32-libxxff86vm lib32-llvm \
                                    lib32-llvm-libs
 
 ##-- create the user and do some needed configurations
 echo -e "\n >>> Creating user 'ygoreus'..."
 groupadd anomaly
-useradd -m -g anomaly -G users,power,storage,network,wheel,video,sound -s /bin/zsh ygor
-
-echo -e "\n >>> Creating user 'ygoreus'..."
-groupadd anomaly
-useradd -m -g anomaly -G users,power,storage,network,wheel,video,sound -s /bin/zsh ygoreus
+useradd -m -g anomaly -G users,power,storage,network,wheel,video -s /bin/zsh ygoreus
 passwd root
 passwd ygoreus
 
