@@ -404,7 +404,7 @@ else
                                        lib32-util-linux lib32-v4l-utils lib32-wayland \
                                        lib32-wxgtk2.8 lib32-xcb-util
     pacman -S --asexplicit --noconfirm lib32-lcms lib32-lcms2 lib32-libaio lib32-libao \
-                                       lib32-libasyncns lib32-libcap lib32-libcups lib32-libltdl\
+                                       lib32-libasyncns lib32-libcap lib32-libcups lib32-libltdl \
                                        lib32-libdrm lib32-ffi lib32-libglade lib32-libice \
                                        lib32-libidn lib32-libldap lib32-libmikmod \
                                        lib32-libmng lib32-libnl lib32-libogg lib32-libpcap \
