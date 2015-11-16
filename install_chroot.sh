@@ -8,7 +8,6 @@ if [[ $? -eq 0 ]]; then
 else
     exit 1
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Enable pacman's extra options? [y/N] " -n 1 -r
 echo ""
@@ -27,7 +26,6 @@ else
     sed -i -e '/\[multilib\]/a Include = /etc/pacman.d/mirrorlist' /etc/pacman.conf
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Set the language, and locale? [y/N] " -n 1 -r
 echo ""
@@ -41,7 +39,6 @@ else
     export LANG=en_US.utf-8
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Set the system and hardware times? [y/N] " -n 1 -r
 echo ""
@@ -55,7 +52,6 @@ else
     pacman -S ntp
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Set the hostname and some console options? [y/N] " -n 1 -r
 echo ""
@@ -70,7 +66,6 @@ else
     echo "" >> /etc/vconsole.conf
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install wireless tools? [y/N] " -n 1 -r
 echo ""
@@ -82,7 +77,6 @@ else
     pacman -S --asexplicit dialog wpa_supplicant wpa_actiond netctl dhcpcd ifplugd ppp
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install and configure bootloader? [y/N] " -n 1 -r
 echo ""
@@ -100,7 +94,6 @@ else
     sed -i 's|block filesystems|block encrypt lvm2 resume filesystems|' /etc/mkinitcpio.conf
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install kernel and associated firmware? [y/N] " -n 1 -r
 echo ""
@@ -113,7 +106,6 @@ else
                                        linux-lts-headers linux-api-headers util-linux
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install tools for AUR/ABS development? [y/N] " -n 1 -r
 echo ""
@@ -127,7 +119,6 @@ else
     pacman -S --asexplicit --noconfirm git bzr subversion mercurial abs
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install filesystem support programs? [y/N] " -n 1 -r
 echo ""
@@ -143,7 +134,6 @@ else
                                        fatsort s3fs-fusenfs-utils curlftpfs
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install True Type Fonts? [y/N] " -n 1 -r
 echo ""
@@ -161,7 +151,6 @@ else
                                        fontconfig freetype2 terminus-font
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install Xorg font libraries? [y/N] " -n 1 -r
 echo ""
@@ -175,7 +164,6 @@ else
                                        xorg-fonts-misc xorg-xlsfonts xorg-xfd
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install Symbolic (japan, china, tai, etc) fonts? [y/N] " -n 1 -r
 echo ""
@@ -190,7 +178,6 @@ else
                                        ttf-tibetan-machine ttf-tlwg ttf-ubraille ttf-hanazono
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install the Xorg Display server? [y/N] " -n 1 -r
 echo ""
@@ -204,7 +191,6 @@ else
                                        xorg-twm xorg-util-macros
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install graphics drivers? [y/N] " -n 1 -r
 echo ""
@@ -218,7 +204,6 @@ else
                                        lib32-mesa-vdpau
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install zshell and associated tools? [y/N] " -n 1 -r
 echo ""
@@ -231,7 +216,6 @@ else
                                        zsh-lovers zshdb
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install archiving tools? [y/N] " -n 1 -r
 echo ""
@@ -245,7 +229,6 @@ else
                                        unp rpmextract ace unace libarchive minizip
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install vim editor and neato plugins? [y/N] " -n 1 -r
 echo ""
@@ -258,7 +241,6 @@ else
                                        vim-nerdtree vim-syntastic vim-systemd vimpager
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install some power saving, control programs? [y/N] " -n 1 -r
 echo ""
@@ -275,7 +257,6 @@ else
     pacman -S --asexplicit --noconfirm lvm2 cryptsetup iptables
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install rxvt and some cli tools? [y/N] " -n 1 -r
 echo ""
@@ -289,7 +270,6 @@ else
                                        lib32-curl inxi
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install multimedia tools mpd, mpv, etc? [y/N] " -n 1 -r
 echo ""
@@ -302,7 +282,6 @@ else
                                        mp3info mpv
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install cryptography tools? [y/N] " -n 1 -r
 echo ""
@@ -321,7 +300,6 @@ else
     pacman -S --asexplicit --noconfirm libdvdcss libdvbpsi
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install some spell checking libraries? [y/N] " -n 1 -r
 echo ""
@@ -334,7 +312,6 @@ else
                                        libmythes mythes-en psiconv
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install sound sub-system? [y/N] " -n 1 -r
 echo ""
@@ -349,7 +326,6 @@ else
                                        alsa-firmware libpulse pavucontrol lib32-libpulse libao
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Installing userspace tools? [y/N] " -n 1 -r
 echo ""
@@ -365,7 +341,6 @@ else
                                        xorg-xcalc xorg-xclock galculator-gtk2
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install documentation? [y/N] " -n 1 -r
 echo ""
@@ -380,7 +355,6 @@ else
                                        freedesktop-docs xorg-docs
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Install multilib packages and codecs? [y/N] " -n 1 -r
 echo ""
@@ -422,7 +396,6 @@ else
                                        lib32-llvm-libs
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Create a user? [y/N] " -n 1 -r
 echo ""
@@ -435,7 +408,6 @@ else
     useradd -m -g anomaly -G users,wheel,power,storage,network,video -s /bin/zsh ygporeus
     sleep 1s
 fi
-
 ##----------------------------------------------------------------------------------------
 read -p "Set passwords for root and user? [y/N] " -n 1 -r
 echo ""
@@ -447,8 +419,5 @@ else
     passwd ygoreus
     sleep 1s
 fi
-
-
-
-
+##----------------------------------------------------------------------------------------
 
