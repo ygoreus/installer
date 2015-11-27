@@ -6,9 +6,10 @@
 * lvm (split up encrypted partition)
 * etc
 
+##### Todo
 
-
-
+* [ ] add prompting to scripts.
+* [ ] add options for scripts.
 
 
 
