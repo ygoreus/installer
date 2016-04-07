@@ -1,0 +1,10 @@
+#!/usr/bin/zsh
+interface=`ip link | awk '/: wl/ {gsub(/:/,"") ; print $2}'`
+if [[ ! -s /etc/wpa_supplicant/wpa_supplicant-${interface}.conf && -s /etc/wpa_supplicant/wpa_supplicant-default.conf ]]; then
+	cp /etc/wpa_supplicant/wpa_supplicant-default.conf /etc/wpa_supplicant/wpa_supplicant-${interface}.conf
+fi
+if [[ ${interface} != "" ]]; then
+	systemctl start wpa_supplicant@${interface}.service
+else
+	exit 1
+fi

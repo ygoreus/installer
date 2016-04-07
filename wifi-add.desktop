@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Exec=gksudo /home/jb/bin/wlan-add-netzen
+Name=Add Network
+Comment=Adds a Network to wpa supplicant
+Icon=/usr/share/icons/Adwaita/48x48/apps/web-browser.png

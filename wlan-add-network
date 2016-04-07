@@ -1,0 +1,10 @@
+#!/usr/bin/zsh
+SSID="$1"
+PSK="$2"
+interface=`ip link | awk '/: wl/ {gsub(/:/,"") ; print$2 }`
+if [[ $SSID != "" && $PSK != "" ]]; then
+	wpa_passphrase $SSID $PSK >> /etc/wpa_supplicant/wpa_supplicant-*.conf
+fi
+if [[ $interface != "" ]]; then
+	systemctl restart wpa_supplicant@${interface}.service
+fi

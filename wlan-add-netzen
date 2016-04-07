@@ -1,0 +1,27 @@
+#!/usr/bin/sh
+## vim:nu:ai:et:ts=4:sw=4:
+
+## variables
+interface=$(ip link | awk '/: wl/ {gsub(/:/,"") ; print $2}')
+SSIDS=$(sudo iw dev ${interface} scan | awk '/SSID/ {gsub(/SSID:/,"") ; print $0}' | sed 's|\ |-|')
+SSIDS="$(echo ${SSIDS} | sed 's| -|" FALSE "|g;s|-|FALSE "|')"
+NETWORK=$(zenity --width 300 --height 500 --list --text "Wireless Networks..." --radiolist --column "Select" --column "Network SSID" ${SSIDS})
+if [[ $NETWORK != "" ]]; then
+    PSWD=$(zenity --title "Network Setup" --text "Enter Password for $NETWORK " --entry )
+else
+    exit 1
+fi
+
+## write to wpa_supplicant
+if [[ $(grep "$NETWORK" /etc/wpa_supplicant/wpa_supplicant-${interface}.conf) != "" ]]; then
+    if [[ $PSWD == "" ]]; then
+        echo -e "\nnetwork={\n    ssid=\"$NETWORK\"\n    key_mgmt=NONE\n}" >> /etc/wpa_supplicant/wpa_supplicant-${interface}.conf
+    else
+        echo -e "\nnetwork={\n    ssid=\"$NETWORK\"\n    psk=\"$PSWD\"\n}" >> /etc/wpa_supplicant/wpa_supplicant-${interface}.conf
+    fi
+else
+    exit 1
+fi
+
+## restart wpa_supplicant
+sudo systemctl enable wpa_supplicant@${interface}.service

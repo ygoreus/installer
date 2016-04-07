@@ -1,0 +1,407 @@
+#!/usr/bin/zsh
+## vim:nu:ai:et:ts=4:sw=4:ft=zsh:syn=zsh:fenc=utf8:fdm=marker:
+
+## variables, functions
+packages=()
+function cmd() {
+    echo " [1;34m>>[1;37m $1 [0m"
+    read "confirm? [0;37m[y/N] [1;35m>> [0m"
+}
+function error() {
+    echo -e " [1;31m>>[1;37m $1...[0m"
+    exit 1
+}
+function msg() {
+    echo -e " [1;32m>>[1;37m Adding packages to the package que...[0m "
+}
+function skp() {
+    echo -e " [1;36m>>[1;37m Skipping packages...[0m "
+}
+## Check if permissions are right...
+[[ $USER == "root" ]] || error "Root permissions required"
+
+## network tools
+cmd "Install networking tools?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'dialog' 'wpa_supplicant' 'iptables'
+    )
+else
+    skp
+fi
+## bootloaders
+cmd "Install bootloader packages?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'syslinux' 'gptfdisk' 'parted'
+        'efibootmgr' 'efivar'
+        'intel-ucode' 'linux' 'linux-headers' 'linux-firmware'
+        'linux-api-headers' 'util-linux' 'systemd'
+    )
+else
+    skp
+fi
+## development
+cmd "Install development tools?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=( 
+        'gcc-multilib' 'lib32-fakeroot' 'lib32-libltdl'
+        'autoconf' 'automake' 'binutils' 'bison'
+        'flex' 'groff' 'libtool' 'm4' 'make' 'patch' 'pkg-config' 'sudo'
+        'git' 'bzr' 'subversion' 'mercurial' 'abs'
+    )
+else
+    skp
+fi
+## compression
+cmd "Install compression/extraction tools?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'bzip2' 'gzip' 'lz4' 'lzo' 'xz' 'zlib' 'gsm' 'libmspack' 'lzop' 'snappy'
+        'p7zip' 'unrar' 'zip' 'avfs' 'blosc' 'libewf' 'lrzip' 'mac' 'ucl'
+        'ecm-tools' 'rpmextract' 'unzip' 'libzip' 'zziplib' 'cpio' 'unp'
+        'unarj' 'arj' 'atool' 'unace' 'libarchive'
+        'lib32-bzip2' 'lib32-xz' 'lib32-zlib'
+    )
+else
+    skp
+fi
+## cryptography
+cmd "Install basic cryptography tools?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'cryptsetup' 'libgcrypt' 'libgpg-error' 'nettle' 'crypto++' 'gcr' 'libcryptui' 'libmcrypt' 'php-mcrypt'
+        'lib32-libgcrypt' 'lib32-libgpg-error' 'lib32-nettle'
+        'botan' 'ccrypt' 'stunnel' 'haveged'
+    )
+else
+    skp
+fi
+cmd "Install dvd/cd decryption tools?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'libdvdcss' 'libdvdnav' 'libdvdread' 'lsdvd'
+        'dvd+rw-tools' 'cdrkit' 'handbrake-cli' 'ffmpeg'
+    )
+else
+    skp
+fi
+cmd "Install python cryptography tools?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'python-crypto' 'python2-crypto' 'python-cryptography' 'python2-cryptography'
+    )
+else
+    skp
+fi
+## filesystem support
+cmd "Install filesystem support programs?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'btrfs-progs' 'dosfstools' 'f2fs-tools' 'exfat-utils' 'fatsort'
+        'hfsprogs' 'shfs-utils' 'squashfs-tools' 'sshfs' 'mtools'
+        'reiserfsprogs' 'progsreiserfs' 'e2fsprogs' 'filesystem' 'jfsutils'
+        'xfsprogs' 'cifs-utils' 'fuse' 'ntfs-3g' 'curlftpfs'
+        'encfs' 'ecryptfs-utils' 'ext4magic' 'fuseiso' 'lib32-e2fsprogs'
+        'shfs-utils' 'schroot' 'mtpfs' 'nfs-utils' 'libnfs'
+        'nilfs-utils' 's3fs-fuse' 'curlftpfs' 'lvm2'
+    )
+else
+    skp
+fi
+## audio subsystem
+cmd "Install pulseaduio and alsa packages?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'alsa-firmware' 'alsa-lib' 'alsa-plugins' 'alsa-tools' 'alsa-utils' 'libao'
+        'pulseaudio' 'pulseaudio-alsa' 'libpulse' 'libcanberra-pulse' 'pulseaudio-lirc'
+        'libcanberra' 'pavucontrol'
+        'lib32-alsa-lib' 'lib32-alsa-plugins' 'lib32-libcanberra-pulse'
+        'lib32-libpulse' 'lib32-libcanberra'
+    )
+else
+    skp
+fi
+## fonts
+cmd "Install truetype fonts?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'ttf-bitstream-vera' 'ttf-cheapskate' 'ttf-dejavu' 'gsfonts'
+        'ttf-freefont' 'ttf-linux-libertine' 'ttf-oxygen' 'ttf-inconsolata'
+        'opendesktop-fonts' 'ttf-anonymous-pro' 'ttf-droid' 'ttf-ionicons'
+        'ttf-fira-mono' 'ttf-fira-sans' 'ttf-gentium' 'gnu-free-fonts'
+        'ttf-liberation' 'ttf-linux-libertine-g' 'ttf-symbola' 'ttf-ubuntu-font-family'
+        'fontconfig' 'freetype2' 'terminus-font'
+    )
+else
+    skp
+fi
+cmd "Install xorg font libraries?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'xorg-font-util' 'xorg-font-utils' 'xorg-fonts-100dpi' 'xorg-fonts-75dpi'
+        'xorg-fonts-alias' 'xorg-fonts-encodings' 'xorg-fonts-misc' 'xorg-xlsfonts'
+        'xorg-xfd' 'xorg-fonts-type1' 'xorg-fonts-cyrillic'
+    )
+else
+    skp
+fi
+cmd "Install symbolic language fonts?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'ttf-arphic-ukai' 'ttf-arphic-uming' 'ttf-baekmuk' 'ttf-freebanglafont'
+        'ttf-hannom' 'ttf-indic-otf' 'ttf-junicode' 'ttf-khmer' 'ttf-mph-2b-damase'
+        'ttf-sazanami' 'ttf-tibetan-machine' 'ttf-tlwg' 'ttf-ubraille' 'ttf-hanazono'
+    )
+else
+    skp
+fi
+## vim and plugins
+cmd "Install vim editor and plugins?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'vim' 'vim-runtime' 'vim-spell-en' 'vim-airline' 'vim-fugitive'
+        'vim-nerdtree' 'vim-syntastic' 'vim-systemd' 'vimpager'
+        'aspell' 'aspell-en' 'hunspell' 'hunspell-en' 'hyphen' 'hyphen-en'
+        'libmythes' 'mythes-en' 'psiconv'
+    )
+else
+    skp
+fi
+## display server
+cmd "Install X11 display server?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'xorg-server' 'xorg-server-common' 'xorg-server-utils' 'xorg-server-xdmx'
+        'xorg-xinit' 'xorg-apps' 'xorg-appres' 'xorg-util-macros' 'xorg-utils'
+        'xf86-input-synaptics' 'xf86-input-evdev'
+    )
+else
+    skp
+fi
+cmd "Install wayland Display server?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'wayland' 'wayland-protocols' 'xorg-server-xwayland' 'weston'
+        'lib32-wayland'
+    )
+else
+    skp
+fi
+## video drivers
+cmd "Install base video drivers?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'mesa' 'mesa-vdpau' 'mesa-demos' 'mesa-libgl'
+        'glu' 'libvdpau-va-gl' 'libtxc_dxtn'
+        'lib32-mesa' 'lib32-mesa-vdpau' 'lib32-mesa-demos'
+        'lib32-mesa-libgl' 'lib32-glu' 'lib32-libtxc_dxtn'
+        'xf86-video-vesa'
+    )
+else
+    skp
+fi
+cmd "Install Intel graphics drivers?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'xf86-video-intel' 'intel-tbb' 'vulkan-intel' 'libva-intel-driver'
+        'lib32-libva-intel-driver'
+    )
+cmd "Install nVidia graphics drivers?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+
+    )
+else
+    skp
+fi
+else
+    skp
+fi
+## video subsystem
+cmd "Install gstreamer and other video plugins?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'gst-plugins-base' 'gst-plugins-base-libs' 'gst-plugins-good' 'gst-libav'
+        'lib32-gst-plugins-base' 'lib32-gst-plugins-base-libs' 'lib32-gst-plugins-good'
+        'nss'
+    )
+else
+    skp
+fi
+## zshell and plugins
+cmd "Install zsh and plugins?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'zsh' 'zsh-completions' 'zsh-syntax-highlighting' 'zshdb'
+    )
+else
+    skp
+fi
+## thinkpadonly
+cmd "Install packages for a thinkpad?"
+if [[ $confirm == "y" ]]; then
+    if [[ $host =~ [Tt][0-9][0-9][0-9] ]]; then
+        msg
+        packages+=(
+            'tp_smapi' 'tp_smapi-lts' 'acpi_call' 'acpi_call-lts'
+        )
+    fi
+else
+    skp
+fi
+## power management
+cmd "Install power management tools?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'cpupower' 'powertop' 'tlp' 'dkms' 'upower' 'lm_sensors' 'smartmontools'
+        'acpi' 'acpid' 'libacpi'
+    )
+else
+    skp
+fi
+## security
+cmd "Install polkit and pam?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'polkit' 'pam'
+        'lib32-polkit' 'lib32-pam'
+    )
+else
+    skp
+fi
+## other cli prgms
+cmd "Install ranger file manager?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'ranger' 'python-chardet' 'libcaca' 'highlight' 'atool' 'w3m' 'poppler' 'mediainfo' 'perl-image-exiftool'
+    )
+else
+    skp
+fi
+cmd "Install the mutt mail reader?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'mutt' 'fetchmail' 'offlineimap' 'procmail'
+    )
+else
+    skp
+fi
+cmd "Other cli programs?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'fortune-mod' 'cowsay' 'screenfetch' 'youtube-dl' 'lsof' 'strace'
+        'htop' 'glances' 'rtorrent' 'finch' 'tree' 'wget' 'pwgen' 'openssh'
+        'tmux' 'rsync' 'curl' 'lib32-curl'
+        'inxi' 'dmidecode' 'file' 'hddtemp'
+    )
+else
+    skp
+fi
+## gui file manager
+cmd "Install pcmanfm?"
+if [[ $confirm == "y" ]]; then
+    msg
+    packages+=(
+        'pcmanfm' 'libgsf' 'ffmpegthumbnailer' 'imagemagick' 'tumbler' 'raw-thumbnailer' 'udisks2' 'mlocate'
+    )
+else
+    skp
+fi
+## multilib packages
+#cmd "Install various codecs and other multilib packages?"
+#if [[ $confirm == "y" ]]; then
+#    msg
+#    packages+=(
+#        'lib32-aalib' 'lib32-acl' 'lib32-alsa-lib' 'lib32-alsa-plugins' 'lib32-atk' 'lib32-attr'
+#        
+#        'lib32-bzip2'
+#        
+#        'lib32-cairo' 'lib32-cdparanoia' 'lib32-celt' 'lib32-colord' 'lib32-cracklib' 'lib32-curl'
+#        
+#        'lib32-db' 'lib32-dconf' 'lib32-libdbus'
+#        
+#        'lib32-e2fsprogs' 'lib32-elfutils' 'lib32-expat'
+#        
+#        'lib32-fakeroot' 'lib32-flac' 'lib32-fontconfig' 'lib32-freetype2'
+#    
+#        'lib32-gcc-libs' 'lib32-gdk-pixbuf2' 'lib32-gettext' 'lib32-giflib' 'lib32-glew' 'lib32-glib-networking'
+#        'lib32-glib2' 'lib32-glibc' 'lib32-glu' 'lib32-gmp' 'lib32-gnutls' 'lib32-gpm' 'lib32-gst-plugins-base'
+#        'lib32-gst-plugins-base-libs' 'lib32-gst-plugins-good' 'lib32-gstreamer' 'lib32-gtk2' 'lib32-gtk3'
+#    
+#        'lib32-harfbuzz'
+#    
+#        'lib32-icu' 'lib32-imlib2' 'lib32-mesa'
+#    
+#        'lib32-jack' 'lib32-json-c' 'lib32-json-glib'
+#    
+#        'lib32-keyutils'
+#    
+#        'lib32-lcms' 'lib32-lcms2' 'lib32-libaio' 'lib32-libao' 'lib32-libasyncns' 'lib32-libavc1394' 'lib32-libcaca'
+#        'lib32-libcanberra' 'lib32-libcanberra-pulse' 'lib32-libcap' 'lib32-libcdio' 'lib32-libcups' 'lib32-libdbus'
+#        'lib32-libdrm' 'lib32-libdv' 'lib32-libffi' 'lib32-libgcrypt' 'lib32-libice' 'lib32-libidn' 'lib32-libjpeg-turbo'
+#        'lib32-libldap' 'lib32-liblphobos' 'lib32-libltdl' 'lib32-libmikmod' 'lib32-libmng' 'lib32-libnl' 'lib32-libogg'
+#        'lib32-libpciaccess' 'lib32-libphobos' 'lib32-libphobos-devel' 'lib32-libpng' 'lib32-libpulse' 'lib32-librsvg'
+#        'lib32-libsamplerate' 'lib32-libssh2' 'lib32-libstdc++5' 'lib32-libtasn1' 'lib32-libthai' 'lib32-libtheora'
+#        'lib32-libtiff' 'lib32-libtxc_dxtn' 'lib32-libusb' 'lib32-libva' 'lib32-libvisual' 'lib32-libvorbis' 'lib32-libvpx'
+#        'lib32-libx11' 'lib32-libxau' 'lib32-libxcb' 'lib32-libxcursor' 'lib32-libxinerama' 'lib32-libxml2' 'lib32-libxmu'
+#        'lib32-libxrandr' 'lib32-libxxf86vm' 'lib32-mesa-libgl'
+#    
+#        'lib32-mesa' 'lib32-mesa-demos' 'lib32-mesa-libgl' 'lib32-mesa-vdpau' 
+#    
+#        'lib32-ncurses' 'lib32-nettle' 'lib32-nss'
+#    
+#        'lib32-openal' 'lib32-openssl' 'lib32-orc'
+#    
+#        'lib32-pango' 'lib32-pcre' 'lib32-pixman' 'lib32-polkit'
+#    
+#        'lib32-readline'
+#    
+#        'lib32-speex' 'lib32-systemd'
+#    
+#        'lib32-taglib' 'lib32-tdb'
+#    
+#        'lib32-util-linux'
+#    
+#        'lib32-wavpack' 'lib32-wayland'
+#    
+#        'lib32-xz'
+#    
+#        'lib32-zlib'
+#    )
+#else
+#    skp
+#fi
+if [[ ${packages[@]} != "" ]]; then
+    pacman -S --asexplicit --needed -- "${packages[@]}"
+else
+    error "No packages, to install"
+fi
+
+
+

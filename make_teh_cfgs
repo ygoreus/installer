@@ -1,0 +1,201 @@
+#!/usr/bin/zsh
+## vim:nonu:ai:et:ts=4:sw=4:fenc=utf8:fdm=marker:
+
+## pacman.conf {{{
+cp -v /etc/pacman.conf /etc/default/pacman-default.conf
+cat > /etc/pacman.conf <<EOF
+## vim:nonu:ai:et:ts=4:sw=4
+
+## General Options
+##----------------
+[options]
+#RootDir     = /
+#DBPath      = /var/lib/pacman/
+#CacheDir    = /var/cache/pacman/pkg/
+#LogFile     = /var/log/pacman.log
+#GPGDir      = /etc/pacman.d/gnupg/
+#HookDir     = /etc/pacman.d/hooks/
+HoldPkg     = pacman glibc
+#XferCommand = /usr/bin/curl -C - -f %u > %o
+#XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u
+#CleanMethod = KeepInstalled
+#UseDelta    = 0.7
+Architecture = auto
+
+## blacklist packages/groups
+##--------------------------
+#IgnorePkg   =
+#IgnoreGroup =
+
+#NoUpgrade   =
+#NoExtract   =
+
+## Misc Options
+##-------------
+ILoveCandy
+UseSyslog
+Color
+TotalDownload
+CheckSpace
+VerbosePkgLists
+
+## Default trust
+##--------------
+SigLevel    = Required DatabaseOptional
+LocalFileSigLevel = Optional
+#RemoteFileSigLevel = Required
+
+
+## Main Repositories
+##-------------
+[core]
+Include = /etc/pacman.d/mirrorlist
+[extra]
+Include = /etc/pacman.d/mirrorlist
+[community]
+Include = /etc/pacman.d/mirrorlist
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+
+## Testing Repositories
+##---------------------
+#[testing]
+#Include = /etc/pacman.d/mirrorlist
+#[community-testing]
+#Include = /etc/pacman.d/mirrorlist
+#[multilib-testing]
+#Include = /etc/pacman.d/mirrorlist
+
+## Other Repositories
+##-------------------
+
+EOF
+#}}}
+## mkinitcpio.conf {{{
+cp /etc/mkinitcpio.conf /etc/default/mkinitcpio-default.conf
+cat > /etc/mkinitcpio.conf <<EOF
+## vim:nonu:ft=sh:
+MODULES="vfat ext4 nvme dm_mod dm_crypt aes_x86_64"
+BINARIES=""
+FILES=""
+HOOKS="base udev block autodetect modconf lvm2 filesystems keyboard fsck shutdown"
+COMPRESSION="gzip"
+#COMPRESSION_OPTIONS=""
+EOF
+#}}}
+## makepkg.conf {{{
+cp -v /etc/makepkg.conf /etc/default/makepkg-default.conf
+sed -i 's|^#MAKEFLAGS|MAKEFLAGS|;s|^MAKEFLAGS=.*$|MAKEFLAGS="-j$()"|' /etc/makepkg.conf
+sed -i 's|^#BUILDDIR|BUILDDIR|;s|^BUILDDIR=.*$|BUILDDIR=/pkgtmp|' /etc/makepkg.conf
+#}}}
+## en.network {{{
+cat > /etc/systemd/network/en.network <<EOF
+[Match]
+Name=en*
+
+[Network]
+DHCP=ipv4
+
+EOF
+#}}}
+## wl.network {{{
+cat > /etc/systemd/network/wl.network <<EOF
+[Match]
+Name=wl*
+
+[Network]
+DHCP=ipv4
+
+EOF
+#}}}
+## wpa_supplicant-default.conf {{{
+cat > /etc/wpa_supplicant/wpa_supplicant-default.conf <<EOF
+ctrl_interface=/var/run/wpa_supplicant
+ctrl_interface_group=wheel
+update_config=1
+fast_reauth=1
+ap_scan=1
+
+network={
+        ssid="BHNTG852G11A2"
+        psk="425517eb"
+        priority=1
+}
+
+network={
+        ssid="CF Net"
+        key_mgmt=NONE
+        priority=2
+}
+
+EOF
+#}}}
+## loader.conf {{{
+cat > /boot/loader/loader.conf <<EOF
+#vim:nonu:ai:et:ts=4:sw=4:ft=conf:syn=conf:fenc=utf8:
+timeout 3
+default cli
+editor  1
+EOF
+#}}}
+## arch.conf {{{
+cat > /boot/loader/entries/arch.conf <<EOF
+#vim:nonu:ai:et:ts=4:sw=4:ft=conf:syn=conf:fenc=utf8:
+title   Linux Arch
+linux   /vmlinuz-linux
+initrd  /intel-ucode.img
+initrd  /initramfs-linux.img
+options rw
+EOF
+#}}}
+## archlive.conf {{{
+cat > /boot/loader/entries/archlive.conf <<EOF
+#vim:nonu:ai:et:ts=4:sw=4:ft=conf:syn=conf:fenc=utf8:
+title   Archiso
+linux   memdisk
+initrd  /archlinux.iso
+options iso vmalloc=2048Mi
+EOF
+#}}}
+## syslinux.cfg {{{
+cat > /boot/syslinux/syslinux.cfg <<EOF
+# Config file for Syslinux -
+# /boot/syslinux/syslinux.cfg
+#vim:nonu:ai:et:ts=4:sw=4:ft=cfg:syn=cfg:fenc=utf8:
+
+DEFAULT arch
+PROMPT 0
+TIMEOUT 30
+
+UI menu.c32
+
+MENU TITLE Arch Linux
+#MENU BACKGROUND splash.png
+MENU COLOR border       30;44   #40ffffff #a0000000 std
+MENU COLOR title        1;36;44 #9033ccff #a0000000 std
+MENU COLOR sel          7;37;40 #e0ffffff #20ffffff all
+MENU COLOR unsel        37;44   #50ffffff #a0000000 std
+MENU COLOR help         37;40   #c0ffffff #a0000000 std
+MENU COLOR timeout_msg  37;40   #80ffffff #00000000 std
+MENU COLOR timeout      1;37;40 #c0ffffff #00000000 std
+MENU COLOR msg07        37;40   #90ffffff #a0000000 std
+MENU COLOR tabmsg       31;40   #30ffffff #00000000 std
+
+LABEL arch
+    MENU LABEL Linux
+    LINUX ../vmlinuz-linux
+    APPEND rw
+    INITRD ../intel-ucode.img,../initramfs-linux.img
+
+LABEL hdt
+        MENU LABEL HDT (Hardware Detection Tool)
+        COM32 hdt.c32
+
+EOF
+#}}}
+
+
+
+
+
+
